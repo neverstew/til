@@ -29,8 +29,9 @@ The cog next to "Runs every 1hr" can be used to set a different interval.
 After some experimentation I landed on this as the content of my Val:
 
 ```javascript
+import Parser from "npm:rss-parser"
+
 export default async function(interval: Interval) {
-  const { default: Parser } = await import("npm:rss-parser");
   let parser = new Parser();
   let feed = await parser.parseURL("https://simonwillison.net/atom/everything/");
   const token = Deno.env.get("DATASETTE_CLOUD_SIMON_FEED_WRITE");
@@ -55,7 +56,7 @@ export default async function(interval: Interval) {
   }
 }
 ```
-- Any NPM module can be imported directly into a Val using `await import("npm:name-of-package")`
+- Any NPM module can be imported directly into a Val using `import "npm:name-of-package"`
 - I used [rss-parser](https://www.npmjs.com/package/rss-parser) to parse the feed - it was the first option I tried and provided exactly what I wanted
 - As mentioned earlier, `Deno.env.get()` provides access to configured environment variables
 - Deno's [fetch() function](https://deno.land/api@v1.40.5?s=fetch) is modeled on the browser standard
